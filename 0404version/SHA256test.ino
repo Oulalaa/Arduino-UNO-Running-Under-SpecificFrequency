@@ -54,9 +54,6 @@ void setup() {
   // Set the clock prescaler
   setClockPrescaler(clock_prescaler);
 
-//  Serial.print("Running at ");
-//  Serial.print((16 / clock_prescaler));
-//  Serial.println(" MHz");
 measureTime();
   
 }
@@ -67,74 +64,18 @@ void loop() {
 }
 
 void measureTime() {
-//  uint32_t startMillis = adjustedMillis();
+
    startMicros = adjustedMicros();
-  
-//  Serial.print("Start millis: ");
-//  Serial.println(startMillis);
+
   Serial.print("Start micros: ");
   Serial.println(startMicros);
 
-//  customDelay(1000); // 1 second delay
-//delay(1000);
+  myFunction();
 
-//  uint32_t elapsedMillis = adjustedMillis() - startMillis;
 
-//  myFunction();
-
-uint8_t key[] = {0x00,0x01,0x02,0x03,0x08,0x09,0x0a,0x0b,0x10,0x11,0x12,0x13,0x18,0x19,0x1a,0x1b};
-  uint8_t IV[] = {0x02,0x01,0x02,0x03,0x08,0x09,0x0a,0x0b,0x10,0x11,0x12,0x13,0x18,0x19,0x1a,0x1b};
-  uint8_t plaintext[] = 
-  {0x12,0x34,0x56,0x78,
-  0x90,0x12,0x34,0x56,
-  0x78,0x90,0x12,0x34,
-   0x78,0x90,0x12,0x34,
-   0x90,0x12,0x34,0x56,
-  0x78,0x90,0x12,0x34,
-   0x78,0x90,0x12,0x34,
-  0x56,0x78,0x90,0x99
-  };
-  uint8_t ciphertext[32];
-
-  uint8_t authtext[] = {0x12,0x34,0x56,0x78,
-  0x90,0x12,0x34,0x56,
-  0x78,0x90,0x12,0x34,
-   0x78,0x90,0x12,0x34,
-   0x90,0x12,0x34,0x56,
-  0x78,0x90,0x12,0x34,
-   0x78,0x90,0x12,0x34,
-  0x56,0x78,0x90,0x99
-  };
-  uint8_t authtag[32];
-  Ascon128 te;
-  te.clear();
-  te.setKey(key,16); //around 100us
-  te.setIV(IV,16);
-te.addAuthData (authtext, 32);
-te.computeTag(authtag,32);
-
-  
-//Serial.println("after define data");
-//  sha256.resetHMAC(key, sizeof(key));
-//  Serial.println("after resetHMAC");
-//  sha256.update(data1, sizeof(data1));
-//    Serial.println("after update data");
-//      Serial.println("   start  ");
-//  timecnt = micros();
-//  sha256.finalizeHMAC(key, sizeof(key), hmac, sizeof(hmac));
-//    Serial.println("after finalizeHMAC");
-//  Serial.print("after myfunction: ");
-//    Serial.println("elapsedMicros");
   elapsedMicros = adjustedMicros() - startMicros;
-
-//  Serial.print("End millis: ");
-//  Serial.println(adjustedMillis());
-//  Serial.print("End micros: ");
-//  Serial.println(adjustedMicros());
-  
   Serial.print("Elapsed time: ");
-//  Serial.print(elapsedMillis);
-//  Serial.print(" ms (");
+
   Serial.print(elapsedMicros);
   Serial.println(" us)");
 }
@@ -149,10 +90,8 @@ void customDelay(uint32_t delay_ms) {
 
 
 void myFunction() {
-  // Your main loop code
-//  customDelayms(1000);
-
-//SHA256 sha256;
+  
+SHA256 sha256;
   byte hmac[68];
 const uint8_t key[32] = {
   0x2b, 0x7e, 0x15, 0x16,
@@ -191,9 +130,9 @@ const uint8_t data1[] = {
    unsigned int timecnt;
 
 
-//  sha256.resetHMAC(key, sizeof(key));
-//  sha256.update(data1, sizeof(data1));
-//      Serial.println("   start  ");
-//  timecnt = micros();
-//  sha256.finalizeHMAC(key, sizeof(key), hmac, sizeof(hmac));
+ sha256.resetHMAC(key, sizeof(key));
+ sha256.update(data1, sizeof(data1));
+ Serial.println("   start  ");
+ timecnt = micros();
+ sha256.finalizeHMAC(key, sizeof(key), hmac, sizeof(hmac));
 }
